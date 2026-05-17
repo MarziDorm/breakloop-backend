@@ -1,0 +1,21 @@
+# BreakLoop
+
+A habit-breaking app that helps you identify triggers, log urges, and learn from slip-ups.
+
+## How to run
+
+**Backend** (Terminal 1)
+```
+cd backend
+npm install
+node index.js
+```
+
+**Frontend** (Terminal 2)
+```
+cd frontend
+npm install
+npm start
+```
+
+The app runs at `http://localhost:3000` (backend) and `http://localhost:3001` (frontend).
