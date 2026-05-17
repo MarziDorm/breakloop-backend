@@ -8,6 +8,7 @@ A habit-breaking app that helps you identify triggers, log urges, and learn from
 ```
 cd backend
 npm install
+npm install cors
 node index.js
 ```
 
