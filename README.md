@@ -6,7 +6,7 @@ A habit-breaking app that helps you identify triggers, log urges, and learn from
 
 **Backend** (Terminal 1)
 ```
-cd backend
+cd breakloop-main/backend
 npm install
 npm install cors
 node index.js
@@ -14,7 +14,7 @@ node index.js
 
 **Frontend** (Terminal 2)
 ```
-cd frontend
+cd breakloop-main/frontend
 npm install
 npm start
 ```
