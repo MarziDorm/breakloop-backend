@@ -10,14 +10,40 @@ export default function UrgeEventItemForm({ habitId, event, onSubmit, onClose })
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit() {
-    if (!triggerTag) { setError("Please select a trigger."); return; }
-    if (resisted === null) { setError("Please select whether you resisted or slipped."); return; }
+    if (!triggerTag) {
+      setError("Please select a trigger.");
+      return;
+    }
+
+    if (resisted === null) {
+      setError("Please select whether you resisted or slipped.");
+      return;
+    }
+
+    if (resisted === false && !slipUpNote.trim()) {
+      setError("Please describe what happened.");
+      return;
+    }
+
     setLoading(true);
     setError(null);
+
     try {
       const body = event
-        ? { id: event.id, triggerTag, resisted, slipUpNote: slipUpNote || null }
-        : { habitId, triggerTag, resisted, slipUpNote: slipUpNote || null };
+        ? {
+            id: event.id,
+            triggerTag,
+            resisted,
+          }
+        : {
+            habitId,
+            triggerTag,
+            resisted,
+          };
+      if (resisted === false) {
+        body.slipUpNote = slipUpNote.trim();
+      }
+
       await onSubmit(body);
       onClose();
     } catch (err) {
@@ -43,6 +69,7 @@ export default function UrgeEventItemForm({ habitId, event, onSubmit, onClose })
             {TRIGGERS.map((t) => (
               <button
                 key={t}
+                type="button"
                 className={"chip" + (triggerTag === t ? " selected" : "")}
                 onClick={() => setTriggerTag(t)}
               >
@@ -56,15 +83,26 @@ export default function UrgeEventItemForm({ habitId, event, onSubmit, onClose })
           <label>Did you resist?</label>
           <div className="chip-group">
             <button
+              type="button"
               className={"chip" + (resisted === true ? " selected" : "")}
               onClick={() => setResisted(true)}
             >
               ✓ Resisted
             </button>
+
             <button
+              type="button"
               className={"chip" + (resisted === false ? " selected" : "")}
               onClick={() => setResisted(false)}
-              style={resisted === false ? { background: "var(--accent2)", borderColor: "var(--accent2)", color: "white" } : {}}
+              style={
+                resisted === false
+                  ? {
+                      background: "var(--accent2)",
+                      borderColor: "var(--accent2)",
+                      color: "white",
+                    }
+                  : {}
+              }
             >
               ✗ Slipped
             </button>
@@ -86,8 +124,15 @@ export default function UrgeEventItemForm({ habitId, event, onSubmit, onClose })
         )}
 
         <div className="modal-footer">
-          <button className="btn btn-ghost" onClick={onClose}>Close</button>
-          <button className="btn btn-primary" onClick={handleSubmit} disabled={loading}>
+          <button className="btn btn-ghost" onClick={onClose}>
+            Close
+          </button>
+
+          <button
+            className="btn btn-primary"
+            onClick={handleSubmit}
+            disabled={loading}
+          >
             {loading ? "Saving..." : "Submit"}
           </button>
         </div>
