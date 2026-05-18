@@ -1,14 +1,14 @@
 function validate(schema, data) {
   const errors = {};
 
-  // Check required fields
+  
   for (const key of schema.required || []) {
     if (data[key] === undefined || data[key] === null || data[key] === "") {
       errors[key] = "required";
     }
   }
 
-  // Check types and constraints
+  
   for (const [key, rules] of Object.entries(schema.properties || {})) {
     if (data[key] === undefined) continue;
     if (rules.type === "string" && typeof data[key] !== "string") {
@@ -28,7 +28,7 @@ function validate(schema, data) {
     }
   }
 
-  // Check unsupported keys
+  
   const allowedKeys = Object.keys(schema.properties || {});
   const unsupportedKeys = Object.keys(data).filter((k) => !allowedKeys.includes(k));
 
